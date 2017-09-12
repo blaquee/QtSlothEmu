@@ -9,6 +9,9 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    //Create UIs
+    cView = new ContextView(this);
+
     //connect signals and slots
     //connect();
 }
@@ -20,12 +23,13 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_onSetContext_clicked()
 {
-    cView = new ContextView(this);
     cView->show();
 
     QEventLoop event;
     connect(this, SIGNAL(destroyed()), &event, SLOT(quit()));
     event.exec();
+
+    //QMessageBox
 }
 
 void MainWindow::onUpdateRegisterContext()
