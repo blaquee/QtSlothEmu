@@ -1,11 +1,16 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "contextview.h"
+#include "ui_contextview.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
+    //connect signals and slots
+    //connect();
 }
 
 MainWindow::~MainWindow()
@@ -15,9 +20,15 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_onSetContext_clicked()
 {
-    if(cView || contextOpened)
-        return;
-    cView = new ContextView();
+    cView = new ContextView(this);
     cView->show();
-    contextOpened = true;
+
+    QEventLoop event;
+    connect(this, SIGNAL(destroyed()), &event, SLOT(quit()));
+    event.exec();
+}
+
+void MainWindow::onUpdateRegisterContext()
+{
+
 }

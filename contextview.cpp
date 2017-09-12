@@ -12,3 +12,8 @@ ContextView::~ContextView()
 {
     delete ui;
 }
+
+void ContextView::on_doneButton_clicked()
+{
+    this->accept();
+}

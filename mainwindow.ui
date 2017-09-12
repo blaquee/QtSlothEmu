@@ -16,7 +16,7 @@
   <widget class="QWidget" name="centralWidget">
    <layout class="QVBoxLayout" name="verticalLayout_2">
     <item>
-     <widget class="QPushButton" name="pushButton_2">
+     <widget class="QPushButton" name="onEmulateButton">
       <property name="text">
        <string>Emulate</string>
       </property>
@@ -37,7 +37,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="pushButton">
+         <widget class="QPushButton" name="onStepButton">
           <property name="text">
            <string>Step</string>
           </property>

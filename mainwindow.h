@@ -2,7 +2,8 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include "contextview.h"
+
+class ContextView;
 
 namespace Ui {
 class MainWindow;
@@ -18,6 +19,8 @@ public:
 
 private slots:
     void on_onSetContext_clicked();
+protected slots:
+    void onUpdateRegisterContext();
 
 private:
     Ui::MainWindow *ui;

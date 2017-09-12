@@ -15,6 +15,9 @@ public:
     explicit ContextView(QWidget *parent = 0);
     ~ContextView();
 
+private slots:
+    void on_doneButton_clicked();
+
 private:
     Ui::ContextView *ui;
 };
