@@ -15,11 +15,11 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainwindow.cpp \
     contextview.cpp \
-    cpu.cpp
+    cpumodel.cpp
 
 HEADERS  += mainwindow.h \
     contextview.h \
-    cpu.h
+    cpumodel.h
 
 FORMS    += mainwindow.ui \
     contextview.ui
