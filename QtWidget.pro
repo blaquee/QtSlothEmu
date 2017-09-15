@@ -19,7 +19,8 @@ SOURCES += main.cpp\
 
 HEADERS  += mainwindow.h \
     contextview.h \
-    cpumodel.h
+    cpumodel.h \
+    defines.h
 
 FORMS    += mainwindow.ui \
     contextview.ui

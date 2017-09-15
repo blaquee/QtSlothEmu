@@ -17,8 +17,7 @@ CpuModel::~CpuModel()
 void CpuModel::initMappings()
 {
     mRegisterMapping.clear();
-    mRegMapListing.clear();
-    mRegValueData.clear();
+    mRegData.clear();
 
 #ifdef _WIN64
     mRegisterMapping.insert(CAX, "RAX");
@@ -78,14 +77,6 @@ void CpuModel::initMappings()
     mRegisterMapping.insert(CS, "CS");
     mRegisterMapping.insert(SS, "SS");
 
-    //Add them to the vector
-    for(auto it = mRegisterMapping.begin(); it != mRegisterMapping.end(); ++it)
-    {
-        RegToStringType tmp;
-        tmp.insert(0, it.key(), it.value());
-        mRegMapListing.push_back(tmp);
-    }
-
     //zero initialize by default
     for(auto it = mRegisterMapping.begin(); it != mRegisterMapping.end(); ++it)
     {
@@ -93,13 +84,13 @@ void CpuModel::initMappings()
         //tmp.insert(0, it.key(), it.value());
 
         RegValueType tmp(it.key(), 0);
-        mRegValueData.push_back(tmp);
+        mRegData.push_back(tmp);
     }
 }
 
 int CpuModel::rowCount(const QModelIndex &parent = QModelIndex()) const
 {
-    return mRegValueData.count();
+    return mRegData.count();
 }
 
 int CpuModel::columnCount(const QModelIndex &parent = QModelIndex()) const
@@ -109,15 +100,15 @@ int CpuModel::columnCount(const QModelIndex &parent = QModelIndex()) const
 
 QVariant CpuModel::data(const QModelIndex &index, int role) const
 {
-    // What does this actually check?
     if(!index.isValid())
         return QVariant();
+    // Display the data
     if(role == Qt::DisplayRole)
     {
         //ensure index is within range
         //if (index > mRegValueData.size())
          //   return QVariant();
-        auto data = mRegValueData[index.row()];
+        auto data = mRegData[index.row()];
 
         switch(index.column())
         {
@@ -129,8 +120,9 @@ QVariant CpuModel::data(const QModelIndex &index, int role) const
         }
         case 1:
         {
-            // value
-            return data.second;
+            // value in hex
+            QString value = QString("%1").arg(data.second, 0, 16);
+            return value;
         }
         }
 
@@ -153,7 +145,37 @@ QVariant CpuModel::headerData(int section, Qt::Orientation orientation, int role
     return QVariant();
 }
 
+Qt::ItemFlags CpuModel::flags(const QModelIndex &index) const
+{
+    //only edit the register values
+    if(index.column() == 1)
+    {
+        return Qt::ItemIsEditable | Qt::ItemIsSelectable| QAbstractTableModel::flags(index);
+    }
+    return QAbstractTableModel::flags(index);
+}
+
+bool CpuModel::setData(const QModelIndex &index, const QVariant &value, int role)
+{
+    if(index.column() == 1)
+    {
+        if(role == Qt::EditRole)
+        {
+            QString s = value.toString();
+            editRegValue(index.row(), s.toUInt(nullptr, 16));
+            emit dataChanged(index, index);
+            return true;
+        }
+    }
+    return false;
+}
+
 QString CpuModel::getRegString(const REGISTER_NAME name) const
 {
     return "";
+}
+
+void CpuModel::editRegValue(int reg, unsigned long value)
+{
+    mRegData[reg].second = value;
 }
