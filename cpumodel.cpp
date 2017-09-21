@@ -20,62 +20,62 @@ void CpuModel::initMappings()
     mRegData.clear();
 
 #ifdef _WIN64
-    mRegisterMapping.insert(CAX, "RAX");
-    mRegisterMapping.insert(CBX, "RBX");
-    mRegisterMapping.insert(CCX, "RCX");
-    mRegisterMapping.insert(CDX, "RDX");
-    mRegisterMapping.insert(CBP, "RBP");
-    mRegisterMapping.insert(CSP, "RSP");
-    mRegisterMapping.insert(CSI, "RSI");
-    mRegisterMapping.insert(CDI, "RDI");
+    mRegisterMapping.insert(std::make_pair(CAX, "RAX"));
+    mRegisterMapping.insert(std::make_pair(CBX, "RBX"));
+    mRegisterMapping.insert(std::make_pair(CCX, "RCX"));
+    mRegisterMapping.insert(std::make_pair(CDX, "RDX"));
+    mRegisterMapping.insert(std::make_pair(CBP, "RBP"));
+    mRegisterMapping.insert(std::make_pair(CSP, "RSP"));
+    mRegisterMapping.insert(std::make_pair(CSI, "RSI"));
+    mRegisterMapping.insert(std::make_pair(CDI, "RDI"));
 
-    mRegisterMapping.insert(R8, "R8");
-    mRegisterMapping.insert(R9, "R9");
-    mRegisterMapping.insert(R10, "R10");
-    mRegisterMapping.insert(R11, "R11");
-    mRegisterMapping.insert(R12, "R12");
-    mRegisterMapping.insert(R13, "R13");
-    mRegisterMapping.insert(R14, "R14");
-    mRegisterMapping.insert(R15, "R15");
+    mRegisterMapping.insert(std::make_pair(R8, "R8"));
+    mRegisterMapping.insert(std::make_pair(R9, "R9"));
+    mRegisterMapping.insert(std::make_pair(R10, "R10"));
+    mRegisterMapping.insert(std::make_pair(R11, "R11"));
+    mRegisterMapping.insert(std::make_pair(R12, "R12"));
+    mRegisterMapping.insert(std::make_pair(R13, "R13"));
+    mRegisterMapping.insert(std::make_pair(R14, "R14"));
+    mRegisterMapping.insert(std::make_pair(R15, "R15"));
 
-    mRegisterMapping.insert(CIP, "RIP");
+    mRegisterMapping.insert(std::make_pair(CIP, "RIP"));
 
-    mRegisterMapping.insert(EFLAGS, "RFLAGS");
+    mRegisterMapping.insert(std::make_pair(EFLAGS, "RFLAGS"));
 #else //x32
-    mRegisterMapping.insert(CAX, "EAX");
-    mRegisterMapping.insert(CBX, "EBX");
-    mRegisterMapping.insert(CCX, "ECX");
-    mRegisterMapping.insert(CDX, "EDX");
-    mRegisterMapping.insert(CBP, "EBP");
-    mRegisterMapping.insert(CSP, "ESP");
-    mRegisterMapping.insert(CSI, "ESI");
-    mRegisterMapping.insert(CDI, "EDI");
+    mRegisterMapping.insert(std::make_pair(CAX, "EAX"));
+    mRegisterMapping.insert(std::make_pair(CBX, "EBX"));
+    mRegisterMapping.insert(std::make_pair(CCX, "ECX"));
+    mRegisterMapping.insert(std::make_pair(CDX, "EDX"));
+    mRegisterMapping.insert(std::make_pair(CBP, "EBP"));
+    mRegisterMapping.insert(std::make_pair(CSP, "ESP"));
+    mRegisterMapping.insert(std::make_pair(CSI, "ESI"));
+    mRegisterMapping.insert(std::make_pair(CDI, "EDI"));
 
-    mRegisterMapping.insert(CIP, "EIP");
+    mRegisterMapping.insert(std::make_pair(CIP, "EIP"));
 
-    mRegisterMapping.insert(EFLAGS, "EFLAGS");
+    mRegisterMapping.insert(std::make_pair(EFLAGS, "EFLAGS"));
 #endif
 
-    mRegisterMapping.insert(ZF, "ZF");
-    mRegisterMapping.insert(PF, "PF");
-    mRegisterMapping.insert(AF, "AF");
+    mRegisterMapping.insert(std::make_pair(ZF, "ZF"));
+    mRegisterMapping.insert(std::make_pair(PF, "PF"));
+    mRegisterMapping.insert(std::make_pair(AF, "AF"));
 
-    mRegisterMapping.insert(OF, "OF");
-    mRegisterMapping.insert(SF, "SF");
-    mRegisterMapping.insert(DF, "DF");
+    mRegisterMapping.insert(std::make_pair(OF, "OF"));
+    mRegisterMapping.insert(std::make_pair(SF, "SF"));
+    mRegisterMapping.insert(std::make_pair(DF, "DF"));
 
-    mRegisterMapping.insert(CF, "CF");
-    mRegisterMapping.insert(TF, "TF");
-    mRegisterMapping.insert(IF, "IF");
+    mRegisterMapping.insert(std::make_pair(CF, "CF"));
+    mRegisterMapping.insert(std::make_pair(TF, "TF"));
+    mRegisterMapping.insert(std::make_pair(IF, "IF"));
 
-    mRegisterMapping.insert(LastError, "LastError");
+    mRegisterMapping.insert(std::make_pair(LastError, "LastError"));
 
-    mRegisterMapping.insert(GS, "GS");
-    mRegisterMapping.insert(FS, "FS");
-    mRegisterMapping.insert(ES, "ES");
-    mRegisterMapping.insert(DS, "DS");
-    mRegisterMapping.insert(CS, "CS");
-    mRegisterMapping.insert(SS, "SS");
+    mRegisterMapping.insert(std::make_pair(GS, "GS"));
+    mRegisterMapping.insert(std::make_pair(FS, "FS"));
+    mRegisterMapping.insert(std::make_pair(ES, "ES"));
+    mRegisterMapping.insert(std::make_pair(DS, "DS"));
+    mRegisterMapping.insert(std::make_pair(CS, "CS"));
+    mRegisterMapping.insert(std::make_pair(SS, "SS"));
 
     //zero initialize by default
     for(auto it = mRegisterMapping.begin(); it != mRegisterMapping.end(); ++it)
@@ -83,18 +83,20 @@ void CpuModel::initMappings()
         //RegToStringType tmp;
         //tmp.insert(0, it.key(), it.value());
 
-        RegValueType tmp(it.key(), 0);
+        RegValueType tmp(it->first, 0);
         mRegData.push_back(tmp);
     }
 }
 
 int CpuModel::rowCount(const QModelIndex &parent = QModelIndex()) const
 {
+    Q_UNUSED(parent);
     return mRegData.count();
 }
 
 int CpuModel::columnCount(const QModelIndex &parent = QModelIndex()) const
 {
+    Q_UNUSED(parent);
     return 2;
 }
 
@@ -116,7 +118,11 @@ QVariant CpuModel::data(const QModelIndex &index, int role) const
         {
             //Name of Register
             auto it = mRegisterMapping.find(data.first);
-            return it.value();
+            if(it != mRegisterMapping.end())
+            {
+                return QString::fromStdString(it->second);
+            }
+            return "None";
         }
         case 1:
         {
@@ -162,7 +168,11 @@ bool CpuModel::setData(const QModelIndex &index, const QVariant &value, int role
         if(role == Qt::EditRole)
         {
             QString s = value.toString();
-            editRegValue(index.row(), s.toUInt(nullptr, 16));
+#ifdef _WIN64
+            setRegValue(index.row(), s.toULongLong(nullptr, 16));
+#else
+            setRegValue(index.row(), s.toULong(nullptr, 16));
+#endif
             emit dataChanged(index, index);
             return true;
         }
@@ -170,12 +180,10 @@ bool CpuModel::setData(const QModelIndex &index, const QVariant &value, int role
     return false;
 }
 
-QString CpuModel::getRegString(const REGISTER_NAME name) const
+std::string CpuModel::getRegString(const REGISTER_NAME name) const
 {
+    auto keyIter = mRegisterMapping.find(name);
+    if(keyIter != mRegisterMapping.end())
+        return keyIter->second;
     return "";
-}
-
-void CpuModel::editRegValue(int reg, unsigned long value)
-{
-    mRegData[reg].second = value;
 }

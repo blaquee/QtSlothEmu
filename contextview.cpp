@@ -26,3 +26,8 @@ void ContextView::on_onDoneButton_clicked()
 {
     this->accept();
 }
+
+void ContextView::on_onUseCurContext_clicked()
+{
+
+}

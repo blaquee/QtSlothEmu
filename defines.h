@@ -1,6 +1,11 @@
 #ifndef DEFINES_H
 #define DEFINES_H
 
+#include <vector>
+#include <algorithm>
+#include <map>
+#include "pluginmain.h"
+
 enum REGISTER_NAME
 {
     CAX, CCX, CDX, CBX, CDI, CBP, CSI, CSP,
@@ -41,8 +46,9 @@ enum REGISTER_NAME
     */
 };
 
-typedef QMap<REGISTER_NAME, QString> RegToStringType;
-typedef QVector<RegToStringType> RegToStringTypeList;
-typedef QPair<REGISTER_NAME, unsigned long> RegValueType;
+typedef std::map<REGISTER_NAME, std::string> RegToStringType;
+typedef std::vector<RegToStringType> RegToStringTypeList;
+typedef std::pair<REGISTER_NAME, duint> RegValueType;
+typedef std::vector<RegValueType> RegValueTypeList;
 
 #endif // DEFINES_H

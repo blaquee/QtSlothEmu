@@ -5,6 +5,7 @@
 #include <QString>
 #include <QSet>
 #include <QVector>
+#include <string>
 #include "defines.h"
 
 
@@ -23,10 +24,13 @@ public:
     QVariant headerData(int section, Qt::Orientation orientation, int role) const;
     Qt::ItemFlags flags(const QModelIndex &index) const;
     bool setData(const QModelIndex &index, const QVariant &value, int role);
-    QString getRegString(const REGISTER_NAME name) const;
+    std::string getRegString(const REGISTER_NAME name) const;
 
-
-    void editRegValue(int reg, unsigned long value);
+    template<class T>
+    void setRegValue(int reg, T value)
+    {
+        mRegData[reg].second = value;
+    }
 
 private:
     RegToStringType mRegisterMapping;

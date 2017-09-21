@@ -4,6 +4,7 @@
 #include <QDialog>
 #include <QTreeView>
 
+
 class CpuModel;
 
 namespace Ui {
@@ -21,10 +22,13 @@ public:
 private slots:
     void on_onDoneButton_clicked();
 
+    void on_onUseCurContext_clicked();
+
 private:
     Ui::ContextView *ui;
     CpuModel* mCpuModel;
     QTreeView *mCpuView;
+
 };
 
 #endif // CONTEXTVIEW_H

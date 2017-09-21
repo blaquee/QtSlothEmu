@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>625</width>
-    <height>416</height>
+    <width>614</width>
+    <height>445</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,17 +16,25 @@
   <widget class="QWidget" name="centralWidget">
    <layout class="QVBoxLayout" name="verticalLayout_2">
     <item>
-     <widget class="QPushButton" name="onEmulateButton">
-      <property name="text">
-       <string>Emulate</string>
-      </property>
-     </widget>
+     <layout class="QHBoxLayout" name="horizontalLayout_2">
+      <item>
+       <widget class="QDockWidget" name="dockWidget">
+        <widget class="QWidget" name="dockWidgetContents">
+         <layout class="QHBoxLayout" name="horizontalLayout_3">
+          <item>
+           <widget class="QTableView" name="tableViewContext"/>
+          </item>
+          <item>
+           <widget class="QListView" name="listViewDisasm"/>
+          </item>
+         </layout>
+        </widget>
+       </widget>
+      </item>
+     </layout>
     </item>
     <item>
      <layout class="QVBoxLayout" name="verticalLayout">
-      <item>
-       <widget class="QListView" name="listView"/>
-      </item>
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout">
         <item>
@@ -43,6 +51,13 @@
           </property>
          </widget>
         </item>
+        <item>
+         <widget class="QPushButton" name="onEmulateButton">
+          <property name="text">
+           <string>Emulate</string>
+          </property>
+         </widget>
+        </item>
        </layout>
       </item>
      </layout>
@@ -54,7 +69,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>625</width>
+     <width>614</width>
      <height>26</height>
     </rect>
    </property>
@@ -62,11 +77,14 @@
     <property name="title">
      <string> Setup</string>
     </property>
+    <addaction name="actionConfigure"/>
    </widget>
    <widget class="QMenu" name="menuView">
     <property name="title">
-     <string>View</string>
+     <string>Views</string>
     </property>
+    <addaction name="actionContext_Editor_Menu"/>
+    <addaction name="actionMapped_Mem_View"/>
    </widget>
    <addaction name="menu_Setup"/>
    <addaction name="menuView"/>
@@ -76,13 +94,31 @@
     <enum>TopToolBarArea</enum>
    </attribute>
    <attribute name="toolBarBreak">
-    <bool>true</bool>
+    <bool>false</bool>
    </attribute>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <action name="actionContext_Editor">
    <property name="text">
     <string>Context Editor</string>
+   </property>
+  </action>
+  <action name="actionContext_Editor_Menu">
+   <property name="text">
+    <string>Context Editor</string>
+   </property>
+  </action>
+  <action name="actionMapped_Mem_View">
+   <property name="text">
+    <string>Mapped Mem View</string>
+   </property>
+  </action>
+  <action name="actionConfigure">
+   <property name="text">
+    <string>Configure</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+C</string>
    </property>
   </action>
  </widget>

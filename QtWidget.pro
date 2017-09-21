@@ -4,15 +4,52 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
 
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+
+CONFIG(debug, debug|release) {
+    DIR_SUFFIX = d
+} else {
+    DIR_SUFFIX =
+}
+
+!contains(QMAKE_HOST.arch, x86_64) {
+    X64_BIN_DIR = ./bin/x32$${DIR_SUFFIX}         # Relative BIN path, 32-bit
+    X64_GEN_DIR = ./gui_build/out32$${DIR_SUFFIX} # QMake temporary generated files, placed inside the build folder. (OBJ, UI, MOC)
+} else {
+    X64_BIN_DIR = ./bin/x64$${DIR_SUFFIX}         # Relative BIN path, 64-bit
+    X64_GEN_DIR = ./gui_build/out64$${DIR_SUFFIX} # QMake temporary generated files, placed inside the build folder. (OBJ, UI, MOC)
+}
+
+
+##
+## QMake output directories
+##
+DESTDIR = $${X64_BIN_DIR}
+
+
+QT       += core gui widgets
+# greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+
+#generate debug symbols in release mode
+QMAKE_CFLAGS_RELEASE += -Zi
+QMAKE_LFLAGS_RELEASE += /DEBUG
+
+# http://www.hexblog.com/?p=991
+QMAKE_CXXFLAGS += -DQT_NO_UNICODE_LITERAL
+
 
 TARGET = QtWidget
-TEMPLATE = app
+TEMPLATE = lib
+LIBS += -luser32 -lshlwapi
+
+!contains(QMAKE_HOST.arch, x86_64) {
+    LIBS += -lx32dbg -lx32bridge -L"$$PWD/pluginsdk"
+} else {
+    LIBS += -lx64dbg -lx64bridge -L"$$PWD/pluginsdk"
+}
 
 
-SOURCES += main.cpp\
+SOURCES +=\
         mainwindow.cpp \
     contextview.cpp \
     cpumodel.cpp \
@@ -109,36 +146,36 @@ HEADERS  += mainwindow.h \
 FORMS    += mainwindow.ui \
     contextview.ui
 
-DISTFILES += \
-    pluginsdk/capstone/capstone_x64.lib \
-    pluginsdk/capstone/capstone_x86.lib \
-    pluginsdk/dbghelp/dbghelp_x64.a \
-    pluginsdk/dbghelp/dbghelp_x64.lib \
-    pluginsdk/dbghelp/dbghelp_x86.a \
-    pluginsdk/dbghelp/dbghelp_x86.lib \
-    pluginsdk/DeviceNameResolver/DeviceNameResolver_x64.a \
-    pluginsdk/DeviceNameResolver/DeviceNameResolver_x64.lib \
-    pluginsdk/DeviceNameResolver/DeviceNameResolver_x86.a \
-    pluginsdk/DeviceNameResolver/DeviceNameResolver_x86.lib \
-    pluginsdk/jansson/jansson_x64.a \
-    pluginsdk/jansson/jansson_x64.lib \
-    pluginsdk/jansson/jansson_x86.a \
-    pluginsdk/jansson/jansson_x86.lib \
-    pluginsdk/lz4/lz4_x64.a \
-    pluginsdk/lz4/lz4_x64.lib \
-    pluginsdk/lz4/lz4_x86.a \
-    pluginsdk/lz4/lz4_x86.lib \
-    pluginsdk/TitanEngine/TitanEngine_x64.a \
-    pluginsdk/TitanEngine/TitanEngine_x64.lib \
-    pluginsdk/TitanEngine/TitanEngine_x86.a \
-    pluginsdk/TitanEngine/TitanEngine_x86.lib \
-    pluginsdk/XEDParse/XEDParse_x64.a \
-    pluginsdk/XEDParse/XEDParse_x64.lib \
-    pluginsdk/XEDParse/XEDParse_x86.a \
-    pluginsdk/XEDParse/XEDParse_x86.lib \
-    pluginsdk/yara/yara_x64.lib \
-    pluginsdk/yara/yara_x86.lib \
-    pluginsdk/x32bridge.lib \
-    pluginsdk/x32dbg.lib \
-    pluginsdk/x64bridge.lib \
-    pluginsdk/x64dbg.lib
+#DISTFILES += \
+#    pluginsdk/capstone/capstone_x64.lib \
+#    pluginsdk/capstone/capstone_x86.lib \
+#    pluginsdk/dbghelp/dbghelp_x64.a \
+#    pluginsdk/dbghelp/dbghelp_x64.lib \
+#    pluginsdk/dbghelp/dbghelp_x86.a \
+#    pluginsdk/dbghelp/dbghelp_x86.lib \
+#    pluginsdk/DeviceNameResolver/DeviceNameResolver_x64.a \
+#    pluginsdk/DeviceNameResolver/DeviceNameResolver_x64.lib \
+#    pluginsdk/DeviceNameResolver/DeviceNameResolver_x86.a \
+#    pluginsdk/DeviceNameResolver/DeviceNameResolver_x86.lib \
+#    pluginsdk/jansson/jansson_x64.a \
+#    pluginsdk/jansson/jansson_x64.lib \
+#    pluginsdk/jansson/jansson_x86.a \
+#    pluginsdk/jansson/jansson_x86.lib \
+#    pluginsdk/lz4/lz4_x64.a \
+#    pluginsdk/lz4/lz4_x64.lib \
+#    pluginsdk/lz4/lz4_x86.a \
+#    pluginsdk/lz4/lz4_x86.lib \
+#    pluginsdk/TitanEngine/TitanEngine_x64.a \
+#    pluginsdk/TitanEngine/TitanEngine_x64.lib \
+#    pluginsdk/TitanEngine/TitanEngine_x86.a \
+#    pluginsdk/TitanEngine/TitanEngine_x86.lib \
+#    pluginsdk/XEDParse/XEDParse_x64.a \
+#    pluginsdk/XEDParse/XEDParse_x64.lib \
+#    pluginsdk/XEDParse/XEDParse_x86.a \
+#    pluginsdk/XEDParse/XEDParse_x86.lib \
+#    pluginsdk/yara/yara_x64.lib \
+#    pluginsdk/yara/yara_x86.lib \
+#    pluginsdk/x32bridge.lib \
+#    pluginsdk/x32dbg.lib \
+#    pluginsdk/x64bridge.lib \
+#    pluginsdk/x64dbg.lib
